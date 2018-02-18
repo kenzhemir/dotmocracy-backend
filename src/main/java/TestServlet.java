@@ -15,7 +15,7 @@ public class TestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
-        out.write(WordUtils.capitalize("miras"));
+        out.write(WordUtils.capitalize("great! everything works fine!"));
     }
 
 }
