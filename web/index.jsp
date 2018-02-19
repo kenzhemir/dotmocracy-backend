@@ -11,6 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+  <h1>Check check check, левое ухо, правое ухо</h1>
   </body>
 </html>
