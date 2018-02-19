@@ -22,7 +22,8 @@
 hs_err_pid*
 
 # Intellij IDEA
-.idea
+classes
+target
 *.iml
 
 # DS_Store
