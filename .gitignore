@@ -26,6 +26,7 @@ hs_err_pid*
 classes
 target
 *.iml
+out
 
 # DS_Store
 .DS_Store
