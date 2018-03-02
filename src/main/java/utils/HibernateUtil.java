@@ -1,59 +1,98 @@
-import model.AppuserEntity;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+package utils;
+
+import models.UserEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.util.List;
 
 public class HibernateUtil {
 
-//    private static final SessionFactory sessionFactory;
-
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-            .createEntityManagerFactory("NewPersistenceUnit");
+            .createEntityManagerFactory("UserPersistenceUnit");
 
-//    static {
-//        try {
-//            sessionFactory = new Configuration().
-//                    configure("hibernate.cfg.xml").
-//                    buildSessionFactory();
-//        } catch (Throwable ex) {
-//            throw new ExceptionInInitializerError(ex);
-//        }
-//    }
-//
-//    public static Session openSession() {
-//        return sessionFactory.openSession();
-//    }
+    /**
+     * Read all the Users.
+     */
+    public static List readUsers() {
+        // List of Users
+        List users = null;
+        // Create an EntityManager and EntityTransaction
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            // Get a transaction
+            transaction = manager.getTransaction();
+            // Begin the transaction
+            transaction.begin();
+            // Get a list of Users
+            users = manager.createQuery("SELECT c FROM UserEntity c",
+                    UserEntity.class).getResultList();
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception ex) {
+            // If there are any exceptions, roll back the changes
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            // Print the Exception
+            ex.printStackTrace();
+        } finally {
+            // Close the EntityManager
+            manager.close();
+        }
+        return users;
+    }
 
+    /**
+     * Check if User exists
+     */
+    public static UserEntity checkUser(String login) {
+        // Create an EntityManager
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        // Boolean variable
+        UserEntity user = null;
+        try {
+            // Get the User object by login
+            Query query = manager.createQuery("SELECT c FROM UserEntity c WHERE login = :login");
+            query.setParameter("login", login);
+            List<UserEntity> resultList = query.getResultList();
+            if (resultList.size() != 0) {
+                user = resultList.get(0);
+            }
+        } catch (Exception ex) {
+            // Print the Exception
+            ex.printStackTrace();
+        } finally {
+            // Close the EntityManager
+            manager.close();
+        }
+        return user;
+    }
 
     /**
      * Create a new User.
-     *
      */
-    public static void create(int id, String login, String password) {
-        // Create an EntityManager
+    public static UserEntity createUser(String login, String password) {
+        // Create a User
+        UserEntity user = null;
+        // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
-
         try {
             // Get a transaction
             transaction = manager.getTransaction();
             // Begin the transaction
             transaction.begin();
-
-            // Create a new Student object
-            AppuserEntity stu = new AppuserEntity();
-            stu.setLogin(login);
-            stu.setPassword(password);
-
-            // Save the student object
-            manager.persist(stu);
-
+            // Create a new User object
+            user = new UserEntity();
+            user.setLogin(login);
+            user.setPassword(password);
+            // Save the user object
+            manager.persist(user);
             // Commit the transaction
             transaction.commit();
         } catch (Exception ex) {
@@ -67,68 +106,27 @@ public class HibernateUtil {
             // Close the EntityManager
             manager.close();
         }
+        return user;
     }
 
     /**
-     * Read all the Students.
-     *
-     */
-    public static List readAll() {
-
-        List appusers = null;
-
-        // Create an EntityManager
-        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
-        EntityTransaction transaction = null;
-
-        try {
-            // Get a transaction
-            transaction = manager.getTransaction();
-            // Begin the transaction
-            transaction.begin();
-
-            // Get a List of Students
-            appusers = manager.createQuery("SELECT c FROM AppuserEntity c",
-                    AppuserEntity.class).getResultList();
-
-            // Commit the transaction
-            transaction.commit();
-        } catch (Exception ex) {
-            // If there are any exceptions, roll back the changes
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            // Print the Exception
-            ex.printStackTrace();
-        } finally {
-            // Close the EntityManager
-            manager.close();
-        }
-        return appusers;
-    }
-
-    /**
-     * Delete the existing Student.
+     * Delete the existing User.
      *
      * @param id
      */
-    public static void delete(int id) {
-        // Create an EntityManager
+    public static void deleteUser(int id) {
+        // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
-
         try {
             // Get a transaction
             transaction = manager.getTransaction();
             // Begin the transaction
             transaction.begin();
-
-            // Get the Student object
-            AppuserEntity stu = manager.find(AppuserEntity.class, id);
-
-            // Delete the student
-            manager.remove(stu);
-
+            // Get the User object
+            UserEntity user = manager.find(UserEntity.class, id);
+            // Delete the user
+            manager.remove(user);
             // Commit the transaction
             transaction.commit();
         } catch (Exception ex) {
@@ -145,30 +143,24 @@ public class HibernateUtil {
     }
 
     /**
-     * Update the existing Student.
-     *
+     * Update the existing User.
      */
-    public static void upate(int id, String login) {
-        // Create an EntityManager
+    public static void updateUser(int id, String login) {
+        // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
-
         try {
             // Get a transaction
             transaction = manager.getTransaction();
             // Begin the transaction
             transaction.begin();
-
-            // Get the Student object
-            AppuserEntity stu = manager.find(AppuserEntity.class, id);
-
+            // Get the User object
+            UserEntity user = manager.find(UserEntity.class, id);
             // Change the values
-            stu.setId(id);
-            stu.setLogin(login);
-
-            // Update the student
-            manager.persist(stu);
-
+            user.setId(id);
+            user.setLogin(login);
+            // Update the user
+            manager.persist(user);
             // Commit the transaction
             transaction.commit();
         } catch (Exception ex) {

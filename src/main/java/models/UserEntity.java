@@ -1,15 +1,16 @@
-package model;
+package models;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "appuser", schema = "public", catalog = "dotmocracy_bd")
-public class AppuserEntity {
+public class UserEntity {
     private long id;
     private String login;
     private String password;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public long getId() {
         return id;
@@ -34,7 +35,7 @@ public class AppuserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AppuserEntity that = (AppuserEntity) o;
+        UserEntity that = (UserEntity) o;
 
         if (id != that.id) return false;
         if (login != null ? !login.equals(that.login) : that.login != null) return false;

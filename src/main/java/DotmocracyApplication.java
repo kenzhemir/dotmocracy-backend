@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
  */
-@ApplicationPath("/dot")
+@ApplicationPath("/api")
 public class DotmocracyApplication extends Application {
 
     private Set<Object> singletons = new HashSet<Object>();
