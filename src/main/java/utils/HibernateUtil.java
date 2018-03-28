@@ -100,6 +100,7 @@ public class HibernateUtil {
             if (transaction != null) {
                 transaction.rollback();
             }
+            user = null;
             // Print the Exception
             ex.printStackTrace();
         } finally {
