@@ -27,6 +27,8 @@ public class VotesHibernateUtil {
             vote.setOptionsId(option_id);
             vote.setUsersId(user_id);
             vote.setValue(val);
+            manager.persist(vote);
+            manager.flush();
             transaction.commit();
         } catch (Exception ex) {
             // If there are any exceptions, roll back the changes
@@ -61,6 +63,7 @@ public class VotesHibernateUtil {
                     .getSingleResult();
             if (user_id != vote.getUsersId()) throw new Exception("You cannot edit others' votes");
             vote.setValue(val);
+            manager.merge(vote);
             transaction.commit();
         } catch (Exception ex) {
             // If there are any exceptions, roll back the changes
