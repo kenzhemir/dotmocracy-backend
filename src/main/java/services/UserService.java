@@ -3,7 +3,7 @@ package services;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import models.UserEntity;
+import models.UsersEntity;
 import utils.HibernateUtil;
 import utils.Tokenizer;
 import utils.filter.JWTTokenNeeded;
@@ -40,7 +40,7 @@ public class UserService {
         Gson gson = new Gson();
         ResponseBuilder responseBuilder;
         try {
-            UserEntity user = HibernateUtil.checkUser(login);
+            UsersEntity user = HibernateUtil.checkUser(login);
             if (user == null) throw new Exception("User does not exist");
             responseBuilder = Response
                     .status(200)
@@ -63,7 +63,7 @@ public class UserService {
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         String login = requestInfo.get("username").getAsString();
         String password = requestInfo.get("password").getAsString();
-        UserEntity user = HibernateUtil.checkUser(login);
+        UsersEntity user = HibernateUtil.checkUser(login);
         if (user != null && user.getPassword().equals(password)) {
             String token = Tokenizer.generateToken(user.getUsername(), user.getId());
             String data = gson.toJson(user);
@@ -111,7 +111,7 @@ public class UserService {
             } else {
                 System.out.println("My log: " + HibernateUtil.checkUser(login));
                 System.out.println("My log: Create User");
-                UserEntity createdUser = HibernateUtil.createUser(login, password);
+                UsersEntity createdUser = HibernateUtil.createUser(login, password);
                 if (createdUser != null) {
                     String response = gson.toJson(createdUser);
                     responseBuilder = Response.status(200).entity(response);

@@ -1,6 +1,6 @@
 package utils.filter;
 
-import models.UserEntity;
+import models.UsersEntity;
 import utils.HibernateUtil;
 import utils.Tokenizer;
 
@@ -66,7 +66,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
             String username = Tokenizer.extractUsername(token);
 
             System.out.println("[JWT] token: " + token);
-            UserEntity user = HibernateUtil.checkUser(username);
+            UsersEntity user = HibernateUtil.checkUser(username);
             if (user == null) throw new Exception("User is null");
         } catch (Exception e) {
             System.out.println("[JWT] Authorization failed: ");

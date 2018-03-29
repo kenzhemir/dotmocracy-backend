@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class IdeasEntity {
     private long id;
     private String name;
+    private long boardsId;
 
     @Id
     @Column(name = "id")
@@ -46,5 +47,15 @@ public class IdeasEntity {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "boards_id")
+    public long getBoardsId() {
+        return boardsId;
+    }
+
+    public void setBoardsId(long boardsId) {
+        this.boardsId = boardsId;
     }
 }

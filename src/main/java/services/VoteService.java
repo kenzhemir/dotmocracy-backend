@@ -62,7 +62,7 @@ public class VoteService {
 //        Gson gson = new Gson();
 //        ResponseBuilder responseBuilder;
 //        try {
-//            UserEntity user = HibernateUtil.checkUser(login);
+//            UsersEntity user = HibernateUtil.checkUser(login);
 //            if (user == null) throw new Exception("User does not exist");
 //            responseBuilder = Response
 //                    .status(200)
@@ -85,7 +85,7 @@ public class VoteService {
 //        JsonObject requestInfo = parser.parse(request).getAsJsonObject();
 //        String login = requestInfo.get("username").getAsString();
 //        String password = requestInfo.get("password").getAsString();
-//        UserEntity user = HibernateUtil.checkUser(login);
+//        UsersEntity user = HibernateUtil.checkUser(login);
 //        if (user != null && user.getPassword().equals(password)) {
 //            String token = Tokenizer.generateToken(user.getUsername());
 //            String data = gson.toJson(user);

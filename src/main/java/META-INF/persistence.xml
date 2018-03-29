@@ -3,11 +3,11 @@
 
     <persistence-unit name="UserPersistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>models.UserEntity</class>
+        <class>models.UsersEntity</class>
         <class>models.BoardsEntity</class>
         <class>models.IdeasEntity</class>
         <class>models.TeamsEntity</class>
-        <class>models.UserEntity</class>
+        <class>models.UsersEntity</class>
         <class>models.VotesEntity</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12229390"/>

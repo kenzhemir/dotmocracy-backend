@@ -1,6 +1,6 @@
 package utils;
 
-import models.UserEntity;
+import models.UsersEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -26,8 +26,8 @@ public class HibernateUtil {
             // Begin the transaction
             transaction.begin();
             // Get a list of Users
-            users = manager.createQuery("SELECT c FROM UserEntity c",
-                    UserEntity.class).getResultList();
+            users = manager.createQuery("SELECT c FROM UsersEntity c",
+                    UsersEntity.class).getResultList();
             // Commit the transaction
             transaction.commit();
         } catch (Exception ex) {
@@ -47,18 +47,18 @@ public class HibernateUtil {
     /**
      * Check if User exists
      */
-    public static UserEntity checkUser(String login) {
+    public static UsersEntity checkUser(String login) {
         // Create an EntityManager
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         // Boolean variable
-        UserEntity user = null;
+        UsersEntity user = null;
         try {
             // Get the User object by login
             System.out.println("Select starts " + login);
-            Query query = manager.createQuery("SELECT c FROM UserEntity c WHERE c.username = :username");
+            Query query = manager.createQuery("SELECT c FROM UsersEntity c WHERE c.username = :username");
             query.setParameter("username", login);
             System.out.println("My log. Check: " + query.getResultList().size());
-            List<UserEntity> resultList = query.getResultList();
+            List<UsersEntity> resultList = query.getResultList();
             System.out.println("My log: size: " + resultList.size());
             if (resultList.size() != 0) {
                 user = resultList.get(0);
@@ -77,9 +77,9 @@ public class HibernateUtil {
     /**
      * Create a new User.
      */
-    public static UserEntity createUser(String login, String password) {
+    public static UsersEntity createUser(String login, String password) {
         // Create a User
-        UserEntity user = null;
+        UsersEntity user = null;
         // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
@@ -89,7 +89,7 @@ public class HibernateUtil {
             // Begin the transaction
             transaction.begin();
             // Create a new User object
-            user = new UserEntity();
+            user = new UsersEntity();
             user.setUsername(login);
             user.setPassword(password);
             // Save the user object
@@ -126,7 +126,7 @@ public class HibernateUtil {
             // Begin the transaction
             transaction.begin();
             // Get the User object
-            UserEntity user = manager.find(UserEntity.class, id);
+            UsersEntity user = manager.find(UsersEntity.class, id);
             // Delete the user
             manager.remove(user);
             // Commit the transaction
@@ -157,7 +157,7 @@ public class HibernateUtil {
             // Begin the transaction
             transaction.begin();
             // Get the User object
-            UserEntity user = manager.find(UserEntity.class, id);
+            UsersEntity user = manager.find(UsersEntity.class, id);
             // Change the values
             user.setId(id);
             user.setUsername(login);

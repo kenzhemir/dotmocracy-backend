@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users", schema = "sql12229390", catalog = "")
-public class UserEntity {
+public class UsersEntity {
     private long id;
     private String username;
     private String password;
@@ -55,7 +55,7 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserEntity that = (UserEntity) o;
+        UsersEntity that = (UsersEntity) o;
 
         if (id != that.id) return false;
         if (teamsId != that.teamsId) return false;
