@@ -1,15 +1,9 @@
 package services;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.UserEntity;
-import org.json.JSONObject;
 import utils.HibernateUtil;
 import utils.Tokenizer;
 import utils.filter.JWTTokenNeeded;
@@ -20,9 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
@@ -89,7 +80,7 @@ public class UserService {
 
     @POST
     @Path("/logout")
-    public Response onLogout(@CookieParam("user") Cookie userCookie) {
+    public Response onLogout(@CookieParam("token") Cookie userCookie) {
         System.out.println("My log: Logout");
         ResponseBuilder responseBuilder;
         if (userCookie == null) {
