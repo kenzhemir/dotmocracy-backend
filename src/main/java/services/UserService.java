@@ -11,7 +11,6 @@ import utils.filter.JWTTokenNeeded;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
@@ -66,7 +65,7 @@ public class UserService {
         String password = requestInfo.get("password").getAsString();
         UserEntity user = HibernateUtil.checkUser(login);
         if (user != null && user.getPassword().equals(password)) {
-            String token = Tokenizer.generateToken(user.getUsername());
+            String token = Tokenizer.generateToken(user.getUsername(), user.getId());
             String data = gson.toJson(user);
             responseBuilder = Response.status(200)
                     .entity(data)
