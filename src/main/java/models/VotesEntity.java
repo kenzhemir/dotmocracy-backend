@@ -8,7 +8,6 @@ public class VotesEntity {
     private long id;
     private long value;
     private long usersId;
-    private long boardsId;
     private long optionsId;
 
     @Id
@@ -42,16 +41,6 @@ public class VotesEntity {
     }
 
     @Basic
-    @Column(name = "boards_id")
-    public long getBoardsId() {
-        return boardsId;
-    }
-
-    public void setBoardsId(long boardsId) {
-        this.boardsId = boardsId;
-    }
-
-    @Basic
     @Column(name = "options_id")
     public long getOptionsId() {
         return optionsId;
@@ -71,7 +60,6 @@ public class VotesEntity {
         if (id != that.id) return false;
         if (value != that.value) return false;
         if (usersId != that.usersId) return false;
-        if (boardsId != that.boardsId) return false;
         if (optionsId != that.optionsId) return false;
 
         return true;
@@ -82,7 +70,6 @@ public class VotesEntity {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (int) (value ^ (value >>> 32));
         result = 31 * result + (int) (usersId ^ (usersId >>> 32));
-        result = 31 * result + (int) (boardsId ^ (boardsId >>> 32));
         result = 31 * result + (int) (optionsId ^ (optionsId >>> 32));
         return result;
     }
