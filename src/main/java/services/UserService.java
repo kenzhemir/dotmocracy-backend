@@ -55,14 +55,14 @@ public class UserService {
         ResponseBuilder responseBuilder;
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
-        String login = requestInfo.get("login").getAsString();
+        String login = requestInfo.get("username").getAsString();
         String password = requestInfo.get("password").getAsString();
         UserEntity user = HibernateUtil.checkUser(login);
         if (user != null && user.getPassword().equals(password)) {
             String response = gson.toJson(user);
             responseBuilder = Response.status(200)
                     .entity(response)
-                    .cookie(new NewCookie("user", user.getLogin()));
+                    .cookie(new NewCookie("user", user.getUsername()));
         } else {
             responseBuilder = Response.status(401);
         }
@@ -93,7 +93,7 @@ public class UserService {
         ResponseBuilder responseBuilder;
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
-        String login = requestInfo.get("login").getAsString();
+        String login = requestInfo.get("username").getAsString();
         UserEntity user = HibernateUtil.checkUser(login);
         String response = "";
         if (user == null) {
@@ -114,16 +114,17 @@ public class UserService {
         ResponseBuilder responseBuilder;
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
-        if (requestInfo.get("login") == null || requestInfo.get("password") == null) {
+        if (requestInfo.get("username") == null || requestInfo.get("password") == null) {
             String response = gson.toJson("wrong format");
             responseBuilder = Response.status(401).entity(response);
         } else {
-            String login = requestInfo.get("login").getAsString();
+            String login = requestInfo.get("username").getAsString();
             String password = requestInfo.get("password").getAsString();
             if (HibernateUtil.checkUser(login) != null) {
                 System.out.println("My log: check user failed");
                 responseBuilder = Response.status(401);
             } else {
+                System.out.println("My log: " + HibernateUtil.checkUser(login));
                 System.out.println("My log: Create User");
                 UserEntity createdUser = HibernateUtil.createUser(login, password);
                 if (createdUser != null) {

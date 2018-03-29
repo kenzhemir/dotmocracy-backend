@@ -57,9 +57,12 @@ public class HibernateUtil {
         UserEntity user = null;
         try {
             // Get the User object by login
-            Query query = manager.createQuery("SELECT c FROM UserEntity c WHERE login = :login");
-            query.setParameter("login", login);
+            System.out.println("Select starts " + login);
+            Query query = manager.createQuery("SELECT c FROM UserEntity c WHERE c.username = :username");
+            query.setParameter("username", login);
+            System.out.println("My log. Check: " + query.getResultList().size());
             List<UserEntity> resultList = query.getResultList();
+            System.out.println("My log: size: " + resultList.size());
             if (resultList.size() != 0) {
                 user = resultList.get(0);
             }
@@ -89,7 +92,7 @@ public class HibernateUtil {
             transaction.begin();
             // Create a new User object
             user = new UserEntity();
-            user.setLogin(login);
+            user.setUsername(login);
             user.setPassword(password);
             // Save the user object
             manager.persist(user);
@@ -159,7 +162,7 @@ public class HibernateUtil {
             UserEntity user = manager.find(UserEntity.class, id);
             // Change the values
             user.setId(id);
-            user.setLogin(login);
+            user.setUsername(login);
             // Update the user
             manager.persist(user);
             // Commit the transaction
