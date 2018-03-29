@@ -1,10 +1,18 @@
 package services;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.UserEntity;
+import org.json.JSONObject;
 import utils.HibernateUtil;
+import utils.Tokenizer;
+import utils.filter.JWTTokenNeeded;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Cookie;
@@ -12,12 +20,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
  */
 @Path("/user")
 public class UserService {
+
 
     @GET
     @Path("/all")
@@ -32,15 +44,20 @@ public class UserService {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response onAuth(@CookieParam("user") String userCookie) {
+    @JWTTokenNeeded
+    public Response onAuth(@CookieParam("token") String token) {
+        String login = Tokenizer.extractUsername(token);
         System.out.println("My log: onAuth");
         Gson gson = new Gson();
         ResponseBuilder responseBuilder;
-        if (userCookie == null) {
+        try {
+            UserEntity user = HibernateUtil.checkUser(login);
+            if (user == null) throw new Exception("User does not exist");
+            responseBuilder = Response
+                    .status(200)
+                    .entity(gson.toJson(user));
+        } catch (Exception exception){
             responseBuilder = Response.status(401);
-        } else {
-            String response = gson.toJson(HibernateUtil.checkUser(userCookie));
-            responseBuilder = Response.status(200).entity(response);
         }
         return responseBuilder.build();
     }
@@ -59,10 +76,11 @@ public class UserService {
         String password = requestInfo.get("password").getAsString();
         UserEntity user = HibernateUtil.checkUser(login);
         if (user != null && user.getPassword().equals(password)) {
-            String response = gson.toJson(user);
+            String token = Tokenizer.generateToken(user.getUsername());
+            String data = gson.toJson(user);
             responseBuilder = Response.status(200)
-                    .entity(response)
-                    .cookie(new NewCookie("user", user.getUsername()));
+                    .entity(data)
+                    .cookie(new NewCookie("token", token));
         } else {
             responseBuilder = Response.status(401);
         }
@@ -80,28 +98,6 @@ public class UserService {
             responseBuilder = Response.status(200)
                     .cookie(new NewCookie(userCookie, "delete-cookie", 0, false));
         }
-        return responseBuilder.build();
-    }
-
-    @POST
-    @Path("/check")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response checkUser(String request) {
-        System.out.println("My log: Check user");
-        Gson gson = new Gson();
-        ResponseBuilder responseBuilder;
-        JsonParser parser = new JsonParser();
-        JsonObject requestInfo = parser.parse(request).getAsJsonObject();
-        String login = requestInfo.get("username").getAsString();
-        UserEntity user = HibernateUtil.checkUser(login);
-        String response = "";
-        if (user == null) {
-            response = gson.toJson("user does not exist");
-        } else {
-            response = gson.toJson(user);
-        }
-        responseBuilder = Response.status(200).entity(response);
         return responseBuilder.build();
     }
 
