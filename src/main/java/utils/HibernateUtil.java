@@ -69,6 +69,7 @@ public class HibernateUtil {
         } catch (Exception ex) {
             // Print the Exception
             ex.printStackTrace();
+            return null;
         } finally {
             // Close the EntityManager
             manager.close();
