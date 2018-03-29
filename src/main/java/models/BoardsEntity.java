@@ -2,10 +2,6 @@ package models;
 
 import javax.persistence.*;
 
-/**
- * Created by Assylkhanov Aslan on 30.03.2018.03.2018=
- */
-
 @Entity
 @Table(name = "boards", schema = "sql12229390", catalog = "")
 public class BoardsEntity {
@@ -13,6 +9,7 @@ public class BoardsEntity {
     private long owner;
     private String topic;
     private String category;
+    private long teamsId;
 
     @Id
     @Column(name = "id")
@@ -54,6 +51,16 @@ public class BoardsEntity {
         this.category = category;
     }
 
+    @Basic
+    @Column(name = "teams_id")
+    public long getTeamsId() {
+        return teamsId;
+    }
+
+    public void setTeamsId(long teamsId) {
+        this.teamsId = teamsId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,6 +70,7 @@ public class BoardsEntity {
 
         if (id != that.id) return false;
         if (owner != that.owner) return false;
+        if (teamsId != that.teamsId) return false;
         if (topic != null ? !topic.equals(that.topic) : that.topic != null) return false;
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
 
@@ -75,6 +83,7 @@ public class BoardsEntity {
         result = 31 * result + (int) (owner ^ (owner >>> 32));
         result = 31 * result + (topic != null ? topic.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (int) (teamsId ^ (teamsId >>> 32));
         return result;
     }
 }
