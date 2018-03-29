@@ -1,8 +1,6 @@
 package utils.filter;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import models.UserEntity;
-import org.json.JSONObject;
 import utils.HibernateUtil;
 import utils.Tokenizer;
 
@@ -57,18 +55,21 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 //            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 //        }
 
-        if (requestContext.getCookies().containsKey("token")) {
-            String token = requestContext.getCookies().get("token").getValue();
-            try {
-                String username = Tokenizer.extractUsername(token);
-                UserEntity user = HibernateUtil.checkUser(username);
-                if (user == null) throw new Exception("User is null");
-            } catch (Exception e) {
-                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-                System.out.println("[JWT] Authorization failed: ");
-                System.out.println(e.getMessage());
-            }
+        if (!requestContext.getCookies().containsKey("token")) {
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            return;
         }
+        String token = requestContext.getCookies().get("token").getValue();
+        try {
+            String username = Tokenizer.extractUsername(token);
+            UserEntity user = HibernateUtil.checkUser(username);
+            if (user == null) throw new Exception("User is null");
+        } catch (Exception e) {
+            System.out.println("[JWT] Authorization failed: ");
+            System.out.println(e.getMessage());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+        }
+
 
     }
 }
