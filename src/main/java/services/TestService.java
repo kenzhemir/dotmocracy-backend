@@ -1,12 +1,15 @@
 package services;
 
+import com.google.gson.Gson;
 import utils.HibernateUtil;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import java.util.List;
-import com.google.gson.Gson;
 
 @Path("/test")
 public class TestService {
@@ -14,6 +17,7 @@ public class TestService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response test() {
+        System.out.println("My log: Test");
         ResponseBuilder b;
         // Create a Gson object
         Gson gson = new Gson();

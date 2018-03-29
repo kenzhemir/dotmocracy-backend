@@ -3,10 +3,10 @@ package models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "appuser", schema = "public", catalog = "dotmocracy_bd")
+@Table(name = "users", schema = "sql12229390", catalog = "sql12229390")
 public class UserEntity {
     private long id;
-    private String login;
+    private String username;
     // transient will make password not added to JSON objects
     private transient String password;
 
@@ -22,13 +22,13 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "login")
-    public String getLogin() {
-        return login;
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserEntity {
         UserEntity that = (UserEntity) o;
 
         if (id != that.id) return false;
-        if (login != null ? !login.equals(that.login) : that.login != null) return false;
+        if (username != null ? !username.equals(that.username) : that.username != null) return false;
 
         return true;
     }
@@ -47,7 +47,7 @@ public class UserEntity {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         return result;
     }
 
