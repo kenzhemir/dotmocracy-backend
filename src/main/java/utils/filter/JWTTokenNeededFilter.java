@@ -56,12 +56,16 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 //        }
 
         if (!requestContext.getCookies().containsKey("token")) {
+            System.out.println("[JWT] no token detected. Cookie keys: "+requestContext.getCookies().keySet());
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
             return;
         }
         String token = requestContext.getCookies().get("token").getValue();
+        System.out.println("[JWT] token: " + token);
         try {
             String username = Tokenizer.extractUsername(token);
+
+            System.out.println("[JWT] token: " + token);
             UserEntity user = HibernateUtil.checkUser(username);
             if (user == null) throw new Exception("User is null");
         } catch (Exception e) {
@@ -69,7 +73,6 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
             System.out.println(e.getMessage());
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
-
 
     }
 }

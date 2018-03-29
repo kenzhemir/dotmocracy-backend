@@ -9,18 +9,17 @@ import utils.Tokenizer;
 import utils.filter.JWTTokenNeeded;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
  */
 @Path("/user")
 public class UserService {
-
+    @Context
+    UriInfo uri;
 
     @GET
     @Path("/all")
@@ -71,7 +70,7 @@ public class UserService {
             String data = gson.toJson(user);
             responseBuilder = Response.status(200)
                     .entity(data)
-                    .cookie(new NewCookie("token", token));
+                    .cookie(new NewCookie("token", token, "/", uri.getBaseUri().getHost(), "comment", 3600*24, false));
         } else {
             responseBuilder = Response.status(401);
         }
