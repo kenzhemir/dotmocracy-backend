@@ -1,7 +1,16 @@
 # dotmocracy-backend
 This a repository for Software Engineering project
 
-### How to setup  
+### How to setup from war file
+1. Download dotmocracy.war file [here](https://drive.google.com/drive/folders/10jajiept3NMzR_Z0pqMTVEp9-T580W_M)
+2. Install TomEE
+3. Put dotmocracy.war file to the TomEE/webapps
+4. Add TomEE/conf/server.xml folowing lines inside `<Host></Host>` tags:  
+`<Context path="" docBase="dotmocracy" debug="0" reloadable="true"></Context>`  
+Example: ![Image](https://i.imgur.com/s62mp7r.png)
+5. Run the TomEE server (bin/startup), and you will be able to see the project on localhost:8080
+
+### How to setup for development  
 
 ##### Install TomEE  
 1. Download TomEE webprofile 7.0.4 ZIP from [here](http://tomee.apache.org/download-ng.html)
