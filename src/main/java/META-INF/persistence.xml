@@ -10,10 +10,10 @@
         <class>models.UsersEntity</class>
         <class>models.VotesEntity</class>
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12229390"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://192.168.137.131:3306/sql12229390"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-            <property name="hibernate.connection.username" value="sql12229390"/>
-            <property name="hibernate.connection.password" value="mfrGcD9ccl"/>
+            <property name="hibernate.connection.username" value="aslan"/>
+            <property name="hibernate.connection.password" value="aslan"/>
 
             <property name="hibernate.archive.autodetection" value="class"/>
             <property name="hibernate.show_sql" value="true"/>

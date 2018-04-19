@@ -58,7 +58,7 @@ public class BoardsHibernateUtil {
             newBoard = new BoardsEntity();
             newBoard.setCategory(category);
             newBoard.setOwner(user_id);
-            newBoard.setTopic(topic);
+            newBoard.setName(topic);
             manager.persist(newBoard);
             transaction.commit();
         } catch (Exception ex) {

@@ -1,11 +1,9 @@
 package utils;
 
-import models.BoardsEntity;
 import models.VotesEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.util.List;
 
 import static utils.ServerConstants.ENTITY_MANAGER_FACTORY;
 

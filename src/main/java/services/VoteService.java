@@ -3,18 +3,14 @@ package services;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import models.BoardsEntity;
 import models.VotesEntity;
-import utils.BoardsHibernateUtil;
 import utils.Tokenizer;
 import utils.VotesHibernateUtil;
 import utils.filter.JWTTokenNeeded;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import java.util.List;
 
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
