@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Assylkhanov Aslan on 20.04.2018.04.2018=
@@ -14,6 +15,9 @@ public class BoardsEntity {
     private String name;
     private String category;
     private Integer teamsId;
+
+    @Transient
+    private List<IdeasEntity> ideas;
 
     @Id
     @Column(name = "id")
@@ -63,6 +67,16 @@ public class BoardsEntity {
 
     public void setTeamsId(Integer teamsId) {
         this.teamsId = teamsId;
+    }
+
+    @Transient
+    public List<IdeasEntity> getIdeas() {
+        return ideas;
+    }
+
+    @Transient
+    public void setIdeas(List<IdeasEntity> ideas) {
+        this.ideas = ideas;
     }
 
     @Override

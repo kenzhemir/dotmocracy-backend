@@ -3,7 +3,9 @@ package services;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import models.BoardsEntity;
 import models.IdeasEntity;
+import utils.BoardsHibernateUtil;
 import utils.IdeasHibernateUtil;
 
 import javax.ws.rs.*;
@@ -23,6 +25,8 @@ public class IdeasService {
     public Response getBoardIdeas(@PathParam("id") int boardId) {
         System.out.println("My Log. GetBoardIdeas getIdeas");
         Response.ResponseBuilder responseBuilder = Response.ok();
+        BoardsEntity board = BoardsHibernateUtil.getBoardInfo(boardId);
+        //TODO add board info into response
         List<IdeasEntity> ideasList = IdeasHibernateUtil.getBoardIdeas(boardId);
         Gson gson = new Gson();
         responseBuilder.entity(gson.toJson(ideasList));

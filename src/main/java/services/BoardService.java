@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.BoardsEntity;
+import models.IdeasEntity;
 import utils.BoardsHibernateUtil;
+import utils.IdeasHibernateUtil;
 import utils.Tokenizer;
 import utils.filter.JWTTokenNeeded;
 
@@ -24,8 +26,10 @@ public class BoardService {
     @JWTTokenNeeded
     public Response getBoards(@CookieParam("token") String token) {
         System.out.println("GetBoards");
+        System.out.println("Token : " + token);
         long id = Tokenizer.extractID(token);
-        List boards = BoardsHibernateUtil.readUserBoards(id);
+        System.out.println("Id" + id);
+        List<BoardsEntity> boards = BoardsHibernateUtil.readUserBoards(id);
         String response_data = (new Gson()).toJson(boards);
         ResponseBuilder builder = Response.status(200).entity(response_data);
         return builder.build();
@@ -43,6 +47,18 @@ public class BoardService {
         String category = requestInfo.get("category").getAsString();
         String topic = requestInfo.get("name").getAsString();
         BoardsEntity board = BoardsHibernateUtil.addBoard(user_id, category, topic, null);
+        String response_data = (new Gson()).toJson(board);
+        ResponseBuilder builder = Response.status(200).entity(response_data);
+        return builder.build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @JWTTokenNeeded
+    public Response getBoard(@PathParam("id") int boardId) {
+        BoardsEntity board = BoardsHibernateUtil.getBoardInfo(boardId);
+        List<IdeasEntity> ideas = IdeasHibernateUtil.getBoardIdeas(boardId);
+        board.setIdeas(ideas);
         String response_data = (new Gson()).toJson(board);
         ResponseBuilder builder = Response.status(200).entity(response_data);
         return builder.build();
