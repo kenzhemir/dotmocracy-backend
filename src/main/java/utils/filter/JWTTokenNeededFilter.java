@@ -8,6 +8,7 @@ import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
@@ -31,7 +32,6 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
 //        // Get the HTTP Authorization header from the request
-//        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 //        logger.info("#### authorizationHeader : " + authorizationHeader);
 //
 //        // Check if the HTTP Authorization header is present and formatted correctly
@@ -41,7 +41,6 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 //        }
 //
 //        // Extract the token from the HTTP Authorization header
-//        String token = authorizationHeader.substring("Bearer".length()).trim();
 //
 //        try {
 //
@@ -55,16 +54,16 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 //            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 //        }
 
-        if (!requestContext.getCookies().containsKey("token")) {
-            System.out.println("[JWT] no token detected. Cookie keys: "+requestContext.getCookies().keySet());
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-            return;
-        }
-        String token = requestContext.getCookies().get("token").getValue();
-        System.out.println("[JWT] token: " + token);
+//        if (!requestContext.getCookies().containsKey("token")) {
+//            System.out.println("[JWT] no token detected. Cookie keys: "+requestContext.getCookies().keySet());
+//            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+//            return;
+//        }
+//        String token = requestContext.getCookies().get("token").getValue();
         try {
+            String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+            String token = Tokenizer.extractTokenFromHeader(authorizationHeader);
             String username = Tokenizer.extractUsername(token);
-
             System.out.println("[JWT] token: " + token);
             UsersEntity user = HibernateUtil.checkUser(username);
             if (user == null) throw new Exception("User is null");
