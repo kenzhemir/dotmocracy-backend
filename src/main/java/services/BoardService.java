@@ -23,6 +23,7 @@ public class BoardService {
     @Path("/")
     @JWTTokenNeeded
     public Response getBoards(@CookieParam("token") String token) {
+        System.out.println("GetBoards");
         long id = Tokenizer.extractID(token);
         List boards = BoardsHibernateUtil.readUserBoards(id);
         String response_data = (new Gson()).toJson(boards);
@@ -35,11 +36,12 @@ public class BoardService {
     @Consumes(MediaType.APPLICATION_JSON)
     @JWTTokenNeeded
     public Response putBoard(String request, @CookieParam("token") String token) {
+        System.out.println("PutBoard");
         long user_id = Tokenizer.extractID(token);
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         String category = requestInfo.get("category").getAsString();
-        String topic = requestInfo.get("topic").getAsString();
+        String topic = requestInfo.get("name").getAsString();
         BoardsEntity board = BoardsHibernateUtil.addBoard(user_id, category, topic, null);
         String response_data = (new Gson()).toJson(board);
         ResponseBuilder builder = Response.status(200).entity(response_data);
