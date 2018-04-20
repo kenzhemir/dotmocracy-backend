@@ -11,6 +11,9 @@ import java.util.List;
 @Table(name = "boards", schema = "sql12229390", catalog = "")
 public class BoardsEntity {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     private Long owner;
     private String name;
@@ -21,11 +24,15 @@ public class BoardsEntity {
     private List<IdeasEntity> ideas;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     public long getId() {
         return id;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     public void setId(long id) {
         this.id = id;
     }

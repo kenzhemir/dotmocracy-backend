@@ -9,7 +9,7 @@ import java.util.List;
 
 import static utils.ServerConstants.ENTITY_MANAGER_FACTORY;
 
-public class HibernateUtil {
+public class UserHibernateUtil {
 
     /**
      * Read all the Users.

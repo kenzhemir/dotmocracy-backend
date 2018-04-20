@@ -43,6 +43,7 @@ public class BoardService {
     @JWTTokenNeeded
     public Response putBoard(String request, @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         System.out.println("PutBoard");
+        System.out.println(authHeader);
         long user_id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
         System.out.println("User ID: " + user_id);
         JsonParser parser = new JsonParser();
@@ -50,7 +51,6 @@ public class BoardService {
         String category = requestInfo.get("category").getAsString();
         String topic = requestInfo.get("name").getAsString();
         BoardsEntity board = BoardsHibernateUtil.addBoard(user_id, category, topic, null);
-
         JsonArray array = requestInfo.getAsJsonArray("ideas");
         if (array != null) {
             System.out.println("Ideas: " + array.toString());
@@ -93,7 +93,7 @@ public class BoardService {
 //        Gson gson = new Gson();
 //        ResponseBuilder responseBuilder;
 //        try {
-//            UsersEntity user = HibernateUtil.checkUser(login);
+//            UsersEntity user = UserHibernateUtil.checkUser(login);
 //            if (user == null) throw new Exception("User does not exist");
 //            responseBuilder = Response
 //                    .status(200)
@@ -116,7 +116,7 @@ public class BoardService {
 //        JsonObject requestInfo = parser.parse(request).getAsJsonObject();
 //        String login = requestInfo.get("username").getAsString();
 //        String password = requestInfo.get("password").getAsString();
-//        UsersEntity user = HibernateUtil.checkUser(login);
+//        UsersEntity user = UserHibernateUtil.checkUser(login);
 //        if (user != null && user.getPassword().equals(password)) {
 //            String token = Tokenizer.generateToken(user.getUsername());
 //            String data = gson.toJson(user);

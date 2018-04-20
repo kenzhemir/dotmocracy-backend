@@ -9,17 +9,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ideas", schema = "sql12229390", catalog = "")
 public class IdeasEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     private String name;
     private Long boardsId;
     private String description;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     public void setId(Long id) {
         this.id = id;
     }

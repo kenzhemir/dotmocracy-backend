@@ -91,6 +91,7 @@ public class BoardsHibernateUtil {
             newBoard.setOwner(user_id);
             newBoard.setName(topic);
             manager.persist(newBoard);
+            manager.flush();
             transaction.commit();
         } catch (Exception ex) {
             // If there are any exceptions, roll back the changes

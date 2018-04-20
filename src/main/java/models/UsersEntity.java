@@ -9,17 +9,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users", schema = "sql12229390", catalog = "")
 public class UsersEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     private String username;
     private String password;
     private Long teamsId;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     public void setId(Long id) {
         this.id = id;
     }
