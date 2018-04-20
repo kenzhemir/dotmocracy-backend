@@ -9,6 +9,7 @@
         <class>models.TeamsEntity</class>
         <class>models.UsersEntity</class>
         <class>models.VotesEntity</class>
+        <class>models.LogsEntity</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://192.168.137.131:3306/sql12229390"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
