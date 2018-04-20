@@ -11,7 +11,7 @@
         <class>models.VotesEntity</class>
         <class>models.LogsEntity</class>
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:mysql://192.168.137.131:3306/sql12229390"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/sql12229390"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
             <property name="hibernate.connection.username" value="aslan"/>
             <property name="hibernate.connection.password" value="aslan"/>
