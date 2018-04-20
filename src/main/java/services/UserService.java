@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.UsersEntity;
-import utils.HibernateUtil;
+import utils.UserHibernateUtil;
 import utils.SuperMegaLogger;
 import utils.Tokenizer;
 import utils.filter.JWTTokenNeeded;
@@ -27,7 +27,7 @@ public class UserService {
     public Response getUsers() {
         System.out.println("My log: onAll");
         Gson gson = new Gson();
-        String response = gson.toJson(HibernateUtil.readUsers());
+        String response = gson.toJson(UserHibernateUtil.readUsers());
         Response.ResponseBuilder builder = Response.status(200).entity(response);
         return builder.build();
     }
@@ -43,7 +43,7 @@ public class UserService {
         try {
             String token = Tokenizer.extractTokenFromHeader(authHeader);
             String login = Tokenizer.extractUsername(token);
-            UsersEntity user = HibernateUtil.checkUser(login);
+            UsersEntity user = UserHibernateUtil.checkUser(login);
             if (user == null) throw new Exception("User does not exist");
             responseBuilder = Response
                     .status(200)
@@ -66,7 +66,7 @@ public class UserService {
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         String login = requestInfo.get("username").getAsString();
         String password = requestInfo.get("password").getAsString();
-        UsersEntity user = HibernateUtil.checkUser(login);
+        UsersEntity user = UserHibernateUtil.checkUser(login);
         if (user != null && user.getPassword().equals(password)) {
             String token = Tokenizer.generateToken(user.getUsername(), user.getId());
             String data = gson.toJson(user);
@@ -97,7 +97,7 @@ public class UserService {
             String username = Tokenizer.extractUsername(token);
             SuperMegaLogger.log(username, "Logout", userAgent);
             responseBuilder = Response.status(200)
-            .header(HttpHeaders.AUTHORIZATION, "");
+                    .header(HttpHeaders.AUTHORIZATION, "");
         }
         return responseBuilder.build();
     }
@@ -117,13 +117,13 @@ public class UserService {
         } else {
             String login = requestInfo.get("username").getAsString();
             String password = requestInfo.get("password").getAsString();
-            if (HibernateUtil.checkUser(login) != null) {
+            if (UserHibernateUtil.checkUser(login) != null) {
                 System.out.println("My log: check user failed");
                 responseBuilder = Response.status(401);
             } else {
-                System.out.println("My log: " + HibernateUtil.checkUser(login));
+                System.out.println("My log: " + UserHibernateUtil.checkUser(login));
                 System.out.println("My log: Create User");
-                UsersEntity createdUser = HibernateUtil.createUser(login, password);
+                UsersEntity createdUser = UserHibernateUtil.createUser(login, password);
                 if (createdUser != null) {
                     String response = gson.toJson(createdUser);
                     responseBuilder = Response.status(200).entity(response);

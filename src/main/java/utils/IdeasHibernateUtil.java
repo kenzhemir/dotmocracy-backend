@@ -35,7 +35,7 @@ public class IdeasHibernateUtil {
         }
     }
 
-    public static boolean createIdea(long boardId, String name) {
+    public static boolean createIdea(long boardId, String name, String description) {
         // Create an EntityManager
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
@@ -48,6 +48,7 @@ public class IdeasHibernateUtil {
             ideasEntity = new IdeasEntity();
             ideasEntity.setName(name);
             ideasEntity.setBoardsId(boardId);
+            ideasEntity.setDescription(description);
             manager.persist(ideasEntity);
             transaction.commit();
         } catch (Exception ex) {

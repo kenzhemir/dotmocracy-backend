@@ -9,7 +9,7 @@ import java.util.List;
 
 import static utils.ServerConstants.ENTITY_MANAGER_FACTORY;
 
-public class HibernateUtil {
+public class UserHibernateUtil {
 
     /**
      * Read all the Users.
@@ -137,7 +137,7 @@ public class HibernateUtil {
     /**
      * Update the existing User.
      */
-    public static void updateUser(int id, String login) {
+    public static void updateUser(long id, String login) {
         // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;

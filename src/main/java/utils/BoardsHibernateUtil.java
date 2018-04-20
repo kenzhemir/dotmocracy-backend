@@ -13,9 +13,9 @@ public class BoardsHibernateUtil {
     /**
      * Read all boards of the user.
      */
-    public static List readUserBoards(long user_id) {
+    public static List<BoardsEntity> readUserBoards(long user_id) {
         // List of Boards
-        List boards = null;
+        List<BoardsEntity> boards = null;
         // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
@@ -44,6 +44,37 @@ public class BoardsHibernateUtil {
         return boards;
     }
 
+    public static BoardsEntity getBoardInfo(long boardId) {
+        // List of Boards
+        BoardsEntity board = null;
+        // Create an EntityManager and EntityTransaction
+        EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            // Get a transaction
+            transaction = manager.getTransaction();
+            // Begin the transaction
+            transaction.begin();
+            // Get a list of Boards
+
+            board = manager.createQuery("SELECT b FROM BoardsEntity b where b.id=:boardId",
+                    BoardsEntity.class).setParameter("boardId", boardId).getSingleResult();
+            // Commit the transaction
+            transaction.commit();
+        } catch (Exception ex) {
+            // If there are any exceptions, roll back the changes
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            // Print the Exception
+            ex.printStackTrace();
+        } finally {
+            // Close the EntityManager
+            manager.close();
+        }
+        return board;
+    }
+
 
     /**
      * Read all boards of the user.
@@ -60,6 +91,7 @@ public class BoardsHibernateUtil {
             newBoard.setOwner(user_id);
             newBoard.setName(topic);
             manager.persist(newBoard);
+            manager.flush();
             transaction.commit();
         } catch (Exception ex) {
             // If there are any exceptions, roll back the changes

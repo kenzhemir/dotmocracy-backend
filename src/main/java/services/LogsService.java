@@ -76,7 +76,7 @@ public class BoardService {
             builder = Response.status(200).entity(response_data);
             SuperMegaLogger.log(Tokenizer.extractUsername(token), "Added board: " + topic, userAgent);
         } else {
-            builder.status(500);
+            builder = Response.status(500);
         }
         return builder.build();
     }

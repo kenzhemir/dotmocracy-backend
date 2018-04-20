@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Assylkhanov Aslan on 20.04.2018.04.2018=
@@ -9,19 +10,29 @@ import javax.persistence.*;
 @Entity
 @Table(name = "boards", schema = "sql12229390", catalog = "")
 public class BoardsEntity {
+
+    @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     private Long owner;
     private String name;
     private String category;
     private Integer teamsId;
 
+    @Transient
+    private List<IdeasEntity> ideas;
+
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     public long getId() {
         return id;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     public void setId(long id) {
         this.id = id;
     }
@@ -64,6 +75,16 @@ public class BoardsEntity {
 
     public void setTeamsId(Integer teamsId) {
         this.teamsId = teamsId;
+    }
+
+    @Transient
+    public List<IdeasEntity> getIdeas() {
+        return ideas;
+    }
+
+    @Transient
+    public void setIdeas(List<IdeasEntity> ideas) {
+        this.ideas = ideas;
     }
 
     @Override
