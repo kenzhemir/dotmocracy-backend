@@ -37,6 +37,10 @@ public class Tokenizer {
         return instance;
     }
 
+    public static String extractTokenFromHeader(String authorizationHeader) {
+        return authorizationHeader.substring("Bearer".length()).trim();
+    }
+
     public static String generateToken(String username, long user_id) {
         return Tokenizer.getInstance().generate(username, user_id);
     }

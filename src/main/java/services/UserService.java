@@ -34,12 +34,13 @@ public class UserService {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @JWTTokenNeeded
-    public Response onAuth(@CookieParam("token") String token) {
-        String login = Tokenizer.extractUsername(token);
+    public Response onAuth(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         System.out.println("My log: onAuth");
         Gson gson = new Gson();
         ResponseBuilder responseBuilder;
         try {
+            String token = Tokenizer.extractTokenFromHeader(authHeader);
+            String login = Tokenizer.extractUsername(token);
             UsersEntity user = HibernateUtil.checkUser(login);
             if (user == null) throw new Exception("User does not exist");
             responseBuilder = Response
@@ -69,7 +70,8 @@ public class UserService {
             String data = gson.toJson(user);
             responseBuilder = Response.status(200)
                     .entity(data)
-                    .cookie(new NewCookie("token", token, "/", uri.getBaseUri().getHost(), "comment", 3600*24, false));
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+//                    .cookie(new NewCookie("token", token, "/", uri.getBaseUri().getHost(), "comment", 3600*24, false));
         } else {
             responseBuilder = Response.status(401);
         }
@@ -78,14 +80,16 @@ public class UserService {
 
     @POST
     @Path("/logout")
-    public Response onLogout(@CookieParam("token") Cookie userCookie) {
+    public Response onLogout(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+
+        String token = Tokenizer.extractTokenFromHeader(authHeader);
         System.out.println("My log: Logout");
         ResponseBuilder responseBuilder;
-        if (userCookie == null) {
+        if (token == null) {
             responseBuilder = Response.status(401);
         } else {
             responseBuilder = Response.status(200)
-                    .cookie(new NewCookie(userCookie, "delete-cookie", 0, false));
+            .header(HttpHeaders.AUTHORIZATION, "");
         }
         return responseBuilder.build();
     }
