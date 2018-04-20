@@ -2,21 +2,33 @@ package models;
 
 import javax.persistence.*;
 
+/**
+ * Created by Assylkhanov Aslan on 20.04.2018.04.2018=
+ */
+
 @Entity
 @Table(name = "users", schema = "sql12229390", catalog = "")
 public class UsersEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     private String username;
     private String password;
-    private long teamsId;
+    private Long teamsId;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,11 +54,11 @@ public class UsersEntity {
 
     @Basic
     @Column(name = "teams_id")
-    public long getTeamsId() {
+    public Long getTeamsId() {
         return teamsId;
     }
 
-    public void setTeamsId(long teamsId) {
+    public void setTeamsId(Long teamsId) {
         this.teamsId = teamsId;
     }
 
@@ -58,9 +70,9 @@ public class UsersEntity {
         UsersEntity that = (UsersEntity) o;
 
         if (id != that.id) return false;
-        if (teamsId != that.teamsId) return false;
         if (username != null ? !username.equals(that.username) : that.username != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (teamsId != null ? !teamsId.equals(that.teamsId) : that.teamsId != null) return false;
 
         return true;
     }
@@ -70,7 +82,7 @@ public class UsersEntity {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (int) (teamsId ^ (teamsId >>> 32));
+        result = 31 * result + (teamsId != null ? teamsId.hashCode() : 0);
         return result;
     }
 }

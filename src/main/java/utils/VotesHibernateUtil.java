@@ -1,11 +1,9 @@
 package utils;
 
-import models.BoardsEntity;
 import models.VotesEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.util.List;
 
 import static utils.ServerConstants.ENTITY_MANAGER_FACTORY;
 
@@ -14,7 +12,7 @@ public class VotesHibernateUtil {
     /**
      * Read all boards of the user.
      */
-    public static VotesEntity saveVote(long option_id, long user_id, int val) {
+    public static VotesEntity saveVote(long option_id, long user_id, long val) {
         VotesEntity vote;
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
@@ -49,7 +47,7 @@ public class VotesHibernateUtil {
     /**
      * Read all boards of the user.
      */
-    public static VotesEntity editVote(long vote_id, long user_id, int val) {
+    public static VotesEntity editVote(long vote_id, long user_id, long val) {
         VotesEntity vote;
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;

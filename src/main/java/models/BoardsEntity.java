@@ -1,44 +1,60 @@
 package models;
 
 import javax.persistence.*;
+import java.util.List;
+
+/**
+ * Created by Assylkhanov Aslan on 20.04.2018.04.2018=
+ */
 
 @Entity
 @Table(name = "boards", schema = "sql12229390", catalog = "")
 public class BoardsEntity {
-    private long id;
-    private long owner;
-    private String topic;
-    private String category;
-    private long teamsId;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+    private Long owner;
+    private String name;
+    private String category;
+    private Integer teamsId;
+
+    @Transient
+    private List<IdeasEntity> ideas;
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     public long getId() {
         return id;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     public void setId(long id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "owner")
-    public long getOwner() {
+    public Long getOwner() {
         return owner;
     }
 
-    public void setOwner(long owner) {
+    public void setOwner(Long owner) {
         this.owner = owner;
     }
 
     @Basic
-    @Column(name = "topic")
-    public String getTopic() {
-        return topic;
+    @Column(name = "name")
+    public String getName() {
+        return name;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Basic
@@ -53,12 +69,22 @@ public class BoardsEntity {
 
     @Basic
     @Column(name = "teams_id")
-    public long getTeamsId() {
+    public Integer getTeamsId() {
         return teamsId;
     }
 
-    public void setTeamsId(long teamsId) {
+    public void setTeamsId(Integer teamsId) {
         this.teamsId = teamsId;
+    }
+
+    @Transient
+    public List<IdeasEntity> getIdeas() {
+        return ideas;
+    }
+
+    @Transient
+    public void setIdeas(List<IdeasEntity> ideas) {
+        this.ideas = ideas;
     }
 
     @Override
@@ -69,10 +95,10 @@ public class BoardsEntity {
         BoardsEntity that = (BoardsEntity) o;
 
         if (id != that.id) return false;
-        if (owner != that.owner) return false;
-        if (teamsId != that.teamsId) return false;
-        if (topic != null ? !topic.equals(that.topic) : that.topic != null) return false;
+        if (owner != null ? !owner.equals(that.owner) : that.owner != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
+        if (teamsId != null ? !teamsId.equals(that.teamsId) : that.teamsId != null) return false;
 
         return true;
     }
@@ -80,10 +106,10 @@ public class BoardsEntity {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (int) (owner ^ (owner >>> 32));
-        result = 31 * result + (topic != null ? topic.hashCode() : 0);
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (int) (teamsId ^ (teamsId >>> 32));
+        result = 31 * result + (teamsId != null ? teamsId.hashCode() : 0);
         return result;
     }
 }

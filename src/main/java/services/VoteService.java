@@ -3,18 +3,17 @@ package services;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import models.BoardsEntity;
 import models.VotesEntity;
-import utils.BoardsHibernateUtil;
 import utils.Tokenizer;
 import utils.VotesHibernateUtil;
 import utils.filter.JWTTokenNeeded;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import java.util.List;
 
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
@@ -24,8 +23,8 @@ public class VoteService {
     @POST
     @Path("/add")
     @JWTTokenNeeded
-    public Response addVote(String request, @CookieParam("token") String token) {
-        long id = Tokenizer.extractID(token);
+    public Response addVote(String request, @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        long id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         long option_id = requestInfo.get("option_id").getAsLong();
@@ -39,8 +38,8 @@ public class VoteService {
     @POST
     @Path("/edit")
     @JWTTokenNeeded
-    public Response editVote(String request, @CookieParam("token") String token) {
-        long id = Tokenizer.extractID(token);
+    public Response editVote(String request, @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        long id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         long vote_id = requestInfo.get("vote_id").getAsLong();
@@ -62,7 +61,7 @@ public class VoteService {
 //        Gson gson = new Gson();
 //        ResponseBuilder responseBuilder;
 //        try {
-//            UsersEntity user = HibernateUtil.checkUser(login);
+//            UsersEntity user = UserHibernateUtil.checkUser(login);
 //            if (user == null) throw new Exception("User does not exist");
 //            responseBuilder = Response
 //                    .status(200)
@@ -85,7 +84,7 @@ public class VoteService {
 //        JsonObject requestInfo = parser.parse(request).getAsJsonObject();
 //        String login = requestInfo.get("username").getAsString();
 //        String password = requestInfo.get("password").getAsString();
-//        UsersEntity user = HibernateUtil.checkUser(login);
+//        UsersEntity user = UserHibernateUtil.checkUser(login);
 //        if (user != null && user.getPassword().equals(password)) {
 //            String token = Tokenizer.generateToken(user.getUsername());
 //            String data = gson.toJson(user);

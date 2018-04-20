@@ -1,7 +1,7 @@
 package services;
 
 import com.google.gson.Gson;
-import utils.HibernateUtil;
+import utils.UserHibernateUtil;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,7 +22,7 @@ public class TestService {
         // Create a Gson object
         Gson gson = new Gson();
         // Read all
-        List list = HibernateUtil.readUsers();
+        List list = UserHibernateUtil.readUsers();
         // Create JSON string
         String json = gson.toJson(list);
         // Create a Response object
