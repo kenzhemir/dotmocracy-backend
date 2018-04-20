@@ -2,51 +2,55 @@ package models;
 
 import javax.persistence.*;
 
+/**
+ * Created by Assylkhanov Aslan on 20.04.2018.04.2018=
+ */
+
 @Entity
 @Table(name = "votes", schema = "sql12229390", catalog = "")
 public class VotesEntity {
     private long id;
-    private long value;
-    private long usersId;
-    private long optionsId;
+    private Long value;
+    private Long usersId;
+    private Long optionsId;
 
     @Id
     @Column(name = "id")
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "value")
-    public long getValue() {
+    public Long getValue() {
         return value;
     }
 
-    public void setValue(long value) {
+    public void setValue(Long value) {
         this.value = value;
     }
 
     @Basic
     @Column(name = "users_id")
-    public long getUsersId() {
+    public Long getUsersId() {
         return usersId;
     }
 
-    public void setUsersId(long usersId) {
+    public void setUsersId(Long usersId) {
         this.usersId = usersId;
     }
 
     @Basic
     @Column(name = "options_id")
-    public long getOptionsId() {
+    public Long getOptionsId() {
         return optionsId;
     }
 
-    public void setOptionsId(long optionsId) {
+    public void setOptionsId(Long optionsId) {
         this.optionsId = optionsId;
     }
 
@@ -58,9 +62,9 @@ public class VotesEntity {
         VotesEntity that = (VotesEntity) o;
 
         if (id != that.id) return false;
-        if (value != that.value) return false;
-        if (usersId != that.usersId) return false;
-        if (optionsId != that.optionsId) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        if (usersId != null ? !usersId.equals(that.usersId) : that.usersId != null) return false;
+        if (optionsId != null ? !optionsId.equals(that.optionsId) : that.optionsId != null) return false;
 
         return true;
     }
@@ -68,9 +72,9 @@ public class VotesEntity {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (int) (value ^ (value >>> 32));
-        result = 31 * result + (int) (usersId ^ (usersId >>> 32));
-        result = 31 * result + (int) (optionsId ^ (optionsId >>> 32));
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (usersId != null ? usersId.hashCode() : 0);
+        result = 31 * result + (optionsId != null ? optionsId.hashCode() : 0);
         return result;
     }
 }

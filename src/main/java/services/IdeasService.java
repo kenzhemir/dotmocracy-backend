@@ -42,7 +42,8 @@ public class IdeasService {
         Response.ResponseBuilder responseBuilder;
         JsonObject jsonRequest = new JsonParser().parse(requestBody).getAsJsonObject();
         String name = jsonRequest.get("name").getAsString();
-        if (IdeasHibernateUtil.createIdea(boardId, name)) {
+        String description = jsonRequest.get("description").getAsString();
+        if (IdeasHibernateUtil.createIdea(boardId, name, description)) {
             responseBuilder = Response.status(201);
         } else {
             responseBuilder = Response.status(500);

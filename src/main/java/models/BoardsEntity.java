@@ -10,7 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "boards", schema = "sql12229390", catalog = "")
 public class BoardsEntity {
-    private Long id;
+
+    private long id;
     private Long owner;
     private String name;
     private String category;
@@ -21,11 +22,11 @@ public class BoardsEntity {
 
     @Id
     @Column(name = "id")
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -86,7 +87,7 @@ public class BoardsEntity {
 
         BoardsEntity that = (BoardsEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != that.id) return false;
         if (owner != null ? !owner.equals(that.owner) : that.owner != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (category != null ? !category.equals(that.category) : that.category != null) return false;
@@ -97,7 +98,7 @@ public class BoardsEntity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (owner != null ? owner.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);

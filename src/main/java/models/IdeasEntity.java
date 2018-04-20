@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ideas", schema = "sql12229390", catalog = "")
 public class IdeasEntity {
-    private Long id;
+    private long id;
     private String name;
     private Long boardsId;
     private String description;
@@ -61,7 +61,7 @@ public class IdeasEntity {
 
         IdeasEntity that = (IdeasEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (boardsId != null ? !boardsId.equals(that.boardsId) : that.boardsId != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
@@ -71,7 +71,7 @@ public class IdeasEntity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (boardsId != null ? boardsId.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);

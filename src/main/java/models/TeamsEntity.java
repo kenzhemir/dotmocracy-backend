@@ -2,6 +2,10 @@ package models;
 
 import javax.persistence.*;
 
+/**
+ * Created by Assylkhanov Aslan on 20.04.2018.04.2018=
+ */
+
 @Entity
 @Table(name = "teams", schema = "sql12229390", catalog = "")
 public class TeamsEntity {
@@ -10,11 +14,11 @@ public class TeamsEntity {
 
     @Id
     @Column(name = "id")
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,6 +1,7 @@
 package services;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.BoardsEntity;
@@ -42,11 +43,26 @@ public class BoardService {
     public Response putBoard(String request, @CookieParam("token") String token) {
         System.out.println("PutBoard");
         long user_id = Tokenizer.extractID(token);
+        System.out.println("User ID: " + user_id);
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         String category = requestInfo.get("category").getAsString();
         String topic = requestInfo.get("name").getAsString();
         BoardsEntity board = BoardsHibernateUtil.addBoard(user_id, category, topic, null);
+
+        JsonArray array = requestInfo.getAsJsonArray("ideas");
+        if (array != null) {
+            System.out.println("Ideas: " + array.toString());
+            if (board != null && array.size() != 0) {
+                System.out.println("Putting ideas");
+                for (int i = 0; i < array.size(); i++) {
+                    JsonObject object = array.get(i).getAsJsonObject();
+                    String ideaName = object.get("name").getAsString();
+                    String ideaDescription = object.get("description").getAsString();
+                    IdeasHibernateUtil.createIdea(board.getId(), ideaName, ideaDescription);
+                }
+            }
+        }
         String response_data = (new Gson()).toJson(board);
         ResponseBuilder builder = Response.status(200).entity(response_data);
         return builder.build();
