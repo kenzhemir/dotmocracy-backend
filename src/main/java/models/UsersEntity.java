@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class UsersEntity {
     private long id;
     private String username;
-    private String password;
+    private transient String password;
     private long teamsId;
 
     @Id

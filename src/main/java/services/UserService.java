@@ -5,12 +5,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import models.UsersEntity;
 import utils.HibernateUtil;
+import utils.SuperMegaLogger;
 import utils.Tokenizer;
 import utils.filter.JWTTokenNeeded;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import java.util.Date;
 
 /**
  * Created by Assylkhanov Aslan on 02.03.2018.03.2018=
@@ -35,7 +37,7 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     @JWTTokenNeeded
     public Response onAuth(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
-        System.out.println("My log: onAuth");
+        System.out.println("[REQUEST]: GET /user");
         Gson gson = new Gson();
         ResponseBuilder responseBuilder;
         try {
@@ -56,7 +58,7 @@ public class UserService {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response onLogin(String request) {
+    public Response onLogin(String request, @HeaderParam("user-agent") String userAgent) {
         System.out.println("My log: onLogin");
         Gson gson = new Gson();
         ResponseBuilder responseBuilder;
@@ -68,10 +70,13 @@ public class UserService {
         if (user != null && user.getPassword().equals(password)) {
             String token = Tokenizer.generateToken(user.getUsername(), user.getId());
             String data = gson.toJson(user);
-            responseBuilder = Response.status(200)
-                    .entity(data)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-//                    .cookie(new NewCookie("token", token, "/", uri.getBaseUri().getHost(), "comment", 3600*24, false));
+
+            System.out.println("Set authorization header");
+            responseBuilder = Response
+                    .ok()
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .entity(data);
+            SuperMegaLogger.log(user.getUsername(), "Logged in", userAgent);
         } else {
             responseBuilder = Response.status(401);
         }
@@ -80,7 +85,8 @@ public class UserService {
 
     @POST
     @Path("/logout")
-    public Response onLogout(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+    @JWTTokenNeeded
+    public Response onLogout(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, @HeaderParam("user-agent") String userAgent) {
 
         String token = Tokenizer.extractTokenFromHeader(authHeader);
         System.out.println("My log: Logout");
@@ -88,6 +94,8 @@ public class UserService {
         if (token == null) {
             responseBuilder = Response.status(401);
         } else {
+            String username = Tokenizer.extractUsername(token);
+            SuperMegaLogger.log(username, "Logout", userAgent);
             responseBuilder = Response.status(200)
             .header(HttpHeaders.AUTHORIZATION, "");
         }
@@ -97,7 +105,7 @@ public class UserService {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response onRegister(String request) {
+    public Response onRegister(String request, @HeaderParam("user-agent") String userAgent) {
         System.out.println("My log: Register");
         Gson gson = new Gson();
         ResponseBuilder responseBuilder;
@@ -119,6 +127,7 @@ public class UserService {
                 if (createdUser != null) {
                     String response = gson.toJson(createdUser);
                     responseBuilder = Response.status(200).entity(response);
+                    SuperMegaLogger.log(createdUser.getUsername(), "Registered", userAgent);
                 } else {
                     System.out.println("My log: Created user is null");
                     responseBuilder = Response.status(500);

@@ -54,12 +54,12 @@ public class HibernateUtil {
         UsersEntity user = null;
         try {
             // Get the User object by login
-            System.out.println("Select starts " + login);
+            //System.out.println("Select starts " + login);
             Query query = manager.createQuery("SELECT c FROM UsersEntity c WHERE c.username = :username");
             query.setParameter("username", login);
-            System.out.println("My log. Check: " + query.getResultList().size());
+            //System.out.println("My log. Check: " + query.getResultList().size());
             List<UsersEntity> resultList = query.getResultList();
-            System.out.println("My log: size: " + resultList.size());
+            //System.out.println("My log: size: " + resultList.size());
             if (resultList.size() != 0) {
                 user = resultList.get(0);
             }
@@ -78,34 +78,24 @@ public class HibernateUtil {
      * Create a new User.
      */
     public static UsersEntity createUser(String login, String password) {
-        // Create a User
         UsersEntity user = null;
-        // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
         try {
-            // Get a transaction
             transaction = manager.getTransaction();
-            // Begin the transaction
             transaction.begin();
-            // Create a new User object
             user = new UsersEntity();
             user.setUsername(login);
             user.setPassword(password);
-            // Save the user object
             manager.persist(user);
-            // Commit the transaction
             transaction.commit();
         } catch (Exception ex) {
-            // If there are any exceptions, roll back the changes
             if (transaction != null) {
                 transaction.rollback();
             }
             user = null;
-            // Print the Exception
             ex.printStackTrace();
         } finally {
-            // Close the EntityManager
             manager.close();
         }
         return user;

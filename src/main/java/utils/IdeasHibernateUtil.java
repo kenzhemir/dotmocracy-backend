@@ -25,7 +25,7 @@ public class IdeasHibernateUtil {
             Query query = manager.createQuery("SELECT c FROM IdeasEntity c WHERE c.boardsId = :id");
             query.setParameter("id", boardId);
             List<IdeasEntity> ideasList = query.getResultList();
-            System.out.println("My log. ideas size: " + ideasList.size());
+            //System.out.println("My log. ideas size: " + ideasList.size());
             return ideasList;
         } catch (Exception ex) {
             ex.printStackTrace();
