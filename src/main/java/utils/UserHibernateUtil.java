@@ -147,7 +147,7 @@ public class UserHibernateUtil {
     /**
      * Update the existing User.
      */
-    public static void updateUser(long id, String login) {
+    public static void updateUser(long id, String login, String password) {
         // Create an EntityManager and EntityTransaction
         EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
         EntityTransaction transaction = null;
@@ -158,9 +158,14 @@ public class UserHibernateUtil {
             transaction.begin();
             // Get the User object
             UsersEntity user = manager.find(UsersEntity.class, id);
+            if (!login.isEmpty()) {
+                user.setUsername(login);
+            }
+            if (!password.isEmpty()) {
+                user.setPassword(password);
+            }
             // Change the values
             user.setId(id);
-            user.setUsername(login);
             // Update the user
             manager.persist(user);
             // Commit the transaction
@@ -177,4 +182,5 @@ public class UserHibernateUtil {
             manager.close();
         }
     }
+
 }

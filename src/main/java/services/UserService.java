@@ -128,4 +128,34 @@ public class UserService {
         }
         return responseBuilder.build();
     }
+
+    @POST
+    @Path("/change")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response onDataChange(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader, String request) {
+        System.out.println("My Log: onDataChange");
+        System.out.println(authHeader);
+        Gson gson = new Gson();
+        ResponseBuilder responseBuilder;
+        JsonParser parser = new JsonParser();
+        if (request == null || request.isEmpty()) {
+            return Response.status(400).build();
+        }
+        JsonObject requestInfo = parser.parse(request).getAsJsonObject();
+        String username = requestInfo.get("username").getAsString();
+        String password = requestInfo.get("password").getAsString();
+        if (authHeader == null || authHeader.isEmpty()) {
+            System.out.println("auth problems");
+            responseBuilder = Response.status(401);
+        } else if (username == null || password == null) {
+            String response = gson.toJson("wrong format");
+            responseBuilder = Response.status(400).entity(response);
+        } else {
+            long user_id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
+            UserHibernateUtil.updateUser(user_id, username, password);
+            responseBuilder = Response.ok();
+        }
+
+        return responseBuilder.build();
+    }
 }
