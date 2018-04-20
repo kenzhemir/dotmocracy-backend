@@ -1,5 +1,6 @@
 package utils;
 
+import models.IdeasEntity;
 import models.VotesEntity;
 
 import javax.persistence.EntityManager;
@@ -25,7 +26,11 @@ public class VotesHibernateUtil {
             vote.setOptionsId(option_id);
             vote.setUsersId(user_id);
             vote.setValue(val);
+            IdeasEntity idea = manager.find(IdeasEntity.class, option_id);
+            idea.setVoteCount(idea.getVoteCount() + 1);
+            idea.setVoteTotal(idea.getVoteTotal() + val);
             manager.persist(vote);
+            manager.persist(idea);
             manager.flush();
             transaction.commit();
         } catch (Exception ex) {
@@ -60,8 +65,11 @@ public class VotesHibernateUtil {
                     .setParameter("id", vote_id)
                     .getSingleResult();
             if (user_id != vote.getUsersId()) throw new Exception("You cannot edit others' votes");
+            IdeasEntity idea = manager.find(IdeasEntity.class, vote.getOptionsId());
+            idea.setVoteTotal(idea.getVoteTotal() - vote.getValue() + val);
             vote.setValue(val);
             manager.merge(vote);
+            manager.persist(idea);
             transaction.commit();
         } catch (Exception ex) {
             // If there are any exceptions, roll back the changes
