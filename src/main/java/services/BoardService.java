@@ -12,6 +12,7 @@ import utils.Tokenizer;
 import utils.filter.JWTTokenNeeded;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -25,10 +26,10 @@ public class BoardService {
     @GET
     @Path("/")
     @JWTTokenNeeded
-    public Response getBoards(@CookieParam("token") String token) {
+    public Response getBoards(@HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         System.out.println("GetBoards");
-        System.out.println("Token : " + token);
-        long id = Tokenizer.extractID(token);
+        System.out.println("Token : " + authHeader);
+        long id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
         System.out.println("Id" + id);
         List<BoardsEntity> boards = BoardsHibernateUtil.readUserBoards(id);
         String response_data = (new Gson()).toJson(boards);
@@ -40,9 +41,9 @@ public class BoardService {
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @JWTTokenNeeded
-    public Response putBoard(String request, @CookieParam("token") String token) {
+    public Response putBoard(String request, @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
         System.out.println("PutBoard");
-        long user_id = Tokenizer.extractID(token);
+        long user_id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
         System.out.println("User ID: " + user_id);
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();

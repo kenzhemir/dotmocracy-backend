@@ -8,9 +8,10 @@ import utils.Tokenizer;
 import utils.VotesHibernateUtil;
 import utils.filter.JWTTokenNeeded;
 
-import javax.ws.rs.CookieParam;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
@@ -22,8 +23,8 @@ public class VoteService {
     @POST
     @Path("/add")
     @JWTTokenNeeded
-    public Response addVote(String request, @CookieParam("token") String token) {
-        long id = Tokenizer.extractID(token);
+    public Response addVote(String request, @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        long id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         long option_id = requestInfo.get("option_id").getAsLong();
@@ -37,8 +38,8 @@ public class VoteService {
     @POST
     @Path("/edit")
     @JWTTokenNeeded
-    public Response editVote(String request, @CookieParam("token") String token) {
-        long id = Tokenizer.extractID(token);
+    public Response editVote(String request, @HeaderParam(HttpHeaders.AUTHORIZATION) String authHeader) {
+        long id = Tokenizer.extractID(Tokenizer.extractTokenFromHeader(authHeader));
         JsonParser parser = new JsonParser();
         JsonObject requestInfo = parser.parse(request).getAsJsonObject();
         long vote_id = requestInfo.get("vote_id").getAsLong();

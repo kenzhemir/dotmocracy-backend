@@ -89,7 +89,7 @@ public class UserService {
             responseBuilder = Response.status(401);
         } else {
             responseBuilder = Response.status(200)
-            .header(HttpHeaders.AUTHORIZATION, "");
+                    .header(HttpHeaders.AUTHORIZATION, "");
         }
         return responseBuilder.build();
     }
